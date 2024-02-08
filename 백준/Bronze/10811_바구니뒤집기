@@ -1,0 +1,18 @@
+N, M = map(int, input().split())
+
+buckets = list(range(1,N+1))
+
+for _ in range (M):
+    st, ed = map(int, input().split())
+    st -= 1
+    ed -= 1
+    for idx in range (int((ed-st)/2)+1):
+        tmp = buckets[st]
+        buckets[st] = buckets[ed]
+        buckets[ed]= tmp
+        st += 1
+        ed -= 1
+
+for num in buckets:
+    print(num, end=' ')
+        
