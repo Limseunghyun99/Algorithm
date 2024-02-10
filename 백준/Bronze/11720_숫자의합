@@ -1,0 +1,9 @@
+num = int(input())
+NUM = int(input())
+sum = 0
+
+for _ in range(num):
+    sum += NUM%10
+    NUM //= 10
+    
+print(sum)
