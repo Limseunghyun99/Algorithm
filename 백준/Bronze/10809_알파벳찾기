@@ -1,0 +1,9 @@
+alphabet = [-1]*26
+words = input()
+
+for idx in range (len(words)):
+    if (alphabet[ord(words[idx])-97] == -1):
+        alphabet[ord(words[idx])-97] = idx 
+    
+for word in alphabet:
+    print(word, end=' ')
