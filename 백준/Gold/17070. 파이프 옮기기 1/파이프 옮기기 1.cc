@@ -6,10 +6,6 @@ int N; // 집의 크기
 int board[MAX][MAX]; // 집의 상태를 저장하는 배열
 int dp[MAX][MAX][3]; // 동적 프로그래밍 배열: (x, y)에서 각 방향으로의 경우의 수 저장
 
-// dx와 dy는 각 방향에 대한 이동을 나타냄. 순서대로 가로, 세로, 대각선
-int dx[3] = {0, 1, 1}; // x 좌표 변화량
-int dy[3] = {1, 0, 1}; // y 좌표 변화량
-
 int main() {
     ios::sync_with_stdio(false); // 입출력 속도 향상
     cin.tie(0); // 입출력 버퍼 비우기 방지
