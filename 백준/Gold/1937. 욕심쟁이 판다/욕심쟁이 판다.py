@@ -21,13 +21,13 @@ def dfs(x, y):
     return dp[x][y]
 
 
-if __name__ == '__main__':
-    n = int(input())
-    graph = [list(map(int, input().split())) for _ in range(n)]
-    dp = [[-1] * n for _ in range(n)]
+n = int(input())
+graph = [list(map(int, input().split())) for _ in range(n)]
+dp = [[-1] * n for _ in range(n)]
 
-    cnt = 0
-    for x in range(n):
-        for y in range(n):
-            cnt = max(cnt, dfs(x, y))
-    print(cnt)
+cnt = 0
+for x in range(n):
+    for y in range(n):
+        cnt = max(cnt, dfs(x, y))
+
+print(cnt)
