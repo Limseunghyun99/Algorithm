@@ -1,67 +1,111 @@
-#include <iostream>
-#include <vector>
+#include <stdio.h>
+#include <string>
 #include <algorithm>
-#include <climits>
+#include <vector>
+#include <iostream>
+#include <math.h>
+#include <map>
 #include <cmath>
+#include <utility>
+#include <numeric>
+#include <functional>
+
 
 using namespace std;
 
-int N, M;
-vector<pair<int, int>> houses;
-vector<pair<int, int>> chickens;
-int result = INT_MAX;
+vector<vector<int>> comb(int n, int k) { // 조합
+	vector<vector<int>> result;
 
-// 치킨 거리 계산 함수
-int calculateChickenDistance(const vector<int>& selected) {
-    int totalDistance = 0;
-    for (auto& h : houses) {
-        int hx = h.first;
-        int hy = h.second;
-        int minDist = INT_MAX;
+	vector<int> chosen(k);
 
-        for (int idx : selected) {
-            int cx = chickens[idx].first;
-            int cy = chickens[idx].second;
-            int dist = abs(hx - cx) + abs(hy - cy);
-            minDist = min(minDist, dist);
-        }
+	
+	for (int i = 0; i < k; ++i) {
+		chosen[i] = i;
+	}
 
-        totalDistance += minDist;
-    }
+	while (true) {
+		
+		result.push_back(chosen);
 
-    return totalDistance;
-}
+		
+		int idx = k - 1;
+		while (idx >= 0 && chosen[idx] == n - k + idx) {
+			idx--;
+		}
 
-// 조합 만들기 (백트래킹)
-void dfs(int start, vector<int>& selected) {
-    if (selected.size() == M) {
-        int dist = calculateChickenDistance(selected);
-        result = min(result, dist);
-        return;
-    }
+		if (idx < 0) {
+			break;
+		}
 
-    for (int i = start; i < chickens.size(); ++i) {
-        selected.push_back(i);
-        dfs(i + 1, selected);
-        selected.pop_back();
-    }
+		chosen[idx]++;
+		for (int i = idx + 1; i < k; ++i) {
+			chosen[i] = chosen[i - 1] + 1;
+		}
+	}
+
+	return result;
 }
 
 int main() {
-    cin >> N >> M;
+	int n, m, house, chi;
+	house = 0;
+	chi = 0;
+	int answer = 0;
+	cin >> n >> m;
+	vector<pair<int, int>> house_dir; // 집 좌표
+	vector<pair<int, int>> chi_dir; // 치킨집 좌표
+	vector<vector<int>> hc_dir; // 치킨집 별 집까지 거리
+	for (int i = 0; i < n; i++) {
+		vector<int> lss;
+		for (int j = 0; j < n; j++) {
+			int s;
+			cin >> s;
+			if (s == 1) {
+				house++;
+				house_dir.push_back(make_pair(i, j));
+			}
+			else if (s == 2) {
+				chi++;
+				chi_dir.push_back(make_pair(i, j));
+				vector<int> hss;
+				hc_dir.push_back(hss); //치킨집 갯수만큼 vector 추가
+			}
+		}
+	}
 
-    for (int i = 0; i < N; ++i) {
-        for (int j = 0; j < N; ++j) {
-            int val;
-            cin >> val;
-            if (val == 1) houses.push_back({i, j});
-            else if (val == 2) chickens.push_back({i, j});
-        }
-    }
+	int num = 0;
+	for (const auto& cd : chi_dir) {
+		for (const auto& hd : house_dir) {
+			int dir = abs(cd.first - hd.first) + abs(cd.second - hd.second);
+			hc_dir[num].push_back(dir); // 치킨집 별로 각 집까지 거리 계산
+		}
+		num++;
+	}
 
-    vector<int> selected;
-    dfs(0, selected);
+	vector<vector<int>> cc = comb(chi, m);
 
-    cout << result << '\n';
-    return 0;
+	int min = 10000000;
+
+	for (const auto& ccc : cc) {
+		int all = 0;
+		for (int i = 0; i < house; i++) {
+			int h_min = 10000;
+			for (int j : ccc) {
+				if (hc_dir[j][i] < h_min) {
+					h_min = hc_dir[j][i]; // 각 집별 치킨 거리 계산
+				}
+			}
+			all += h_min;
+		}
+
+		if (all < min) {
+			min = all; 
+		}
+	}
+
+	answer = min;
+
+	cout << answer << endl;
+
+	return 0;
 }
