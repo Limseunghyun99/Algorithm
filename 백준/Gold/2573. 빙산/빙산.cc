@@ -23,7 +23,6 @@ void bfs(int x, int y) {
         for (int d = 0; d < 4; d++) {
             int nx = cx + dx[d];
             int ny = cy + dy[d];
-            if (nx < 0 || ny < 0 || nx >= N || ny >= M) continue;
             if (!visited[nx][ny] && map[nx][ny] > 0) {
                 visited[nx][ny] = true;
                 q.push({nx, ny});
@@ -43,7 +42,7 @@ void melt() {
                 for (int d = 0; d < 4; d++) {
                     int ni = i + dx[d];
                     int nj = j + dy[d];
-                    if (ni >= 0 && nj >= 0 && ni < N && nj < M && map[ni][nj] == 0)
+                    if (map[ni][nj] == 0)
                         sea++;
                 }
                 temp[i][j] = max(0, map[i][j] - sea);
