@@ -33,16 +33,13 @@ void bfs(int x, int y) {
 
 // 매년 빙산 녹이기
 void melt() {
-    memset(temp, 0, sizeof(temp));
-
+    // memset(temp, 0, sizeof(temp));
     for (int i = 0; i < N; i++) {
         for (int j = 0; j < M; j++) {
             if (map[i][j] > 0) {
                 int sea = 0;
                 for (int d = 0; d < 4; d++) {
-                    int ni = i + dx[d];
-                    int nj = j + dy[d];
-                    if (map[ni][nj] == 0)
+                    if (map[i + dx[d]][j + dy[d]] == 0)
                         sea++;
                 }
                 temp[i][j] = max(0, map[i][j] - sea);
